@@ -1,0 +1,115 @@
+<div class="corporate-wrapper">
+
+  <!-- ENCABEZADO: Título y descripción -->
+  <header class="sys-header">
+    <div class="header-content">
+      <h1>{{ nombreSistema }} <span class="highlight">| {{ tituloPrincipal }}</span></h1>
+      <p>{{ descripcionSistema }}</p>
+    </div>
+    <div class="header-badge">v2.4 Pro</div>
+  </header>
+
+  <!-- SECCIÓN 1 DELIMITADA: Tarjetas con Contadores y Métricas -->
+  <section class="section-container metrics-section">
+    <div class="section-title-wrapper">
+      <h2>📊 Contadores y Métricas de Rendimiento</h2>
+      <span class="section-subtitle">Indicadores clave de la organización</span>
+    </div>
+    
+    <div class="metrics-grid">
+      <!-- Contador 1 -->
+      <div class="metric-card">
+        <div class="metric-icon">👥</div>
+        <div class="metric-info">
+          <h3>Total Registros (Contador)</h3>
+          <p class="metric-number">{{ totalContactos }}</p>
+        </div>
+      </div>
+
+      <!-- Contador 2 -->
+      <div class="metric-card">
+        <div class="metric-icon">🟢</div>
+        <div class="metric-info">
+          <h3>Personal Disponible (Contador)</h3>
+          <p class="metric-number">{{ contactosActivos }}</p>
+        </div>
+      </div>
+
+      <!-- Métrica 1 -->
+      <div class="metric-card">
+        <div class="metric-icon">📈</div>
+        <div class="metric-info">
+          <h3>Tasa de Disponibilidad (Métrica)</h3>
+          <p class="metric-number">{{ porcentajeDisponibilidad }}%</p>
+        </div>
+      </div>
+
+      <!-- Métrica 2 -->
+      <div class="metric-card">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-info">
+          <h3>Eficiencia del Sistema (Métrica)</h3>
+          <p class="metric-number">{{ eficienciaOperativa }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2 DELIMITADA: Panel Operativo, Botones Interactivos y Tabla -->
+  <section class="section-container panel-section">
+    <div class="section-toolbar">
+      <div>
+        <h2>🗂️ Panel de Control y Colaboradores</h2>
+        <span class="section-subtitle">Gestión de agenda y directorio</span>
+      </div>
+      
+      <!-- 2 Botones Interactivos -->
+      <div class="actions-group">
+        <button class="btn-action primary" (click)="sincronizarBase()">
+          🔄 Sincronizar Datos
+        </button>
+        <button class="btn-action secondary" (click)="alternarMetricas()">
+          ⚙️ Ajustar Métrica
+        </button>
+      </div>
+    </div>
+
+    <!-- Alerta dinámica interactiva -->
+    <div class="status-alert" [ngClass]="tipoAlerta">
+      <span>💡</span> <strong>Notificación operativa:</strong> {{ estadoMensaje }}
+    </div>
+
+    <!-- Listado con *ngFor -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Colaborador</th>
+            <th>Cargo</th>
+            <th>Área</th>
+            <th>Correo Institucional</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of listaContactos">
+            <td><strong>{{ c.nombre }}</strong></td>
+            <td>{{ c.cargo }}</td>
+            <td><span class="tag-area">{{ c.area }}</span></td>
+            <td class="email-text">{{ c.correo }}</td>
+            <td>
+              <span class="status-dot" [class.disponible]="c.estado === 'Disponible'" [class.reunion]="c.estado === 'En Reunión'"></span>
+              {{ c.estado }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PIE DE PÁGINA: Nombre obligatorio del estudiante -->
+  <footer class="sys-footer">
+    <p>Desarrollado con arquitectura Angular por <strong>José Manuel Cóndor Alcalá</strong> — Curso: Programación Front-end</p>
+  </footer>
+
+</div>
