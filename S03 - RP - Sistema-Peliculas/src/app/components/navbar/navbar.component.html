@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <div class="navbar-brand">
+      <span class="brand-icon">🎬</span>
+      <span class="brand-title">Sistema de Películas</span>
+    </div>
+
+    <!-- Menú principal -->
+    <ul class="navbar-menu">
+      <li class="nav-item active">
+        <a href="#" class="nav-link" (click)="$event.preventDefault()">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" (click)="$event.preventDefault()">Catálogo</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" (click)="$event.preventDefault()">Géneros</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" (click)="$event.preventDefault()">Agregar</a>
+      </li>
+    </ul>
+
+    <!-- Contador dinámico -->
+    <span class="navbar-badge">{{ totalPeliculas }} películas</span>
+  </div>
+</nav>

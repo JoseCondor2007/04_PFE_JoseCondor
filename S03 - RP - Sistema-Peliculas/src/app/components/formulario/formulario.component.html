@@ -1,0 +1,120 @@
+<div class="formulario-overlay">
+  <div class="formulario-container">
+    <div class="formulario-card">
+      <div class="formulario-header">
+        <h2 class="formulario-title">{{ tituloFormulario }}</h2>
+        <button class="btn-close" (click)="onCancelar()" type="button">✕</button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #form="ngForm">
+        <!-- Título -->
+        <div class="form-group">
+          <label>Título *</label>
+          <input
+            type="text"
+            [(ngModel)]="pelicula.titulo"
+            name="titulo"
+            required
+            placeholder="Ingresa el título de la película"
+            class="form-control"
+          />
+        </div>
+
+        <!-- Director -->
+        <div class="form-group">
+          <label>Director *</label>
+          <input
+            type="text"
+            [(ngModel)]="pelicula.director"
+            name="director"
+            required
+            placeholder="Nombre del director"
+            class="form-control"
+          />
+        </div>
+
+        <!-- Año y Género -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Año</label>
+            <input
+              type="number"
+              [(ngModel)]="pelicula.anio"
+              name="anio"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Género</label>
+            <select
+              [(ngModel)]="pelicula.genero"
+              name="genero"
+              class="form-control"
+            >
+              <option value="">Selecciona un género</option>
+              <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Calificación -->
+        <div class="form-group">
+          <label>Calificación: {{ pelicula.calificacion }}/10</label>
+          <input
+            type="range"
+            [(ngModel)]="pelicula.calificacion"
+            name="calificacion"
+            min="0"
+            max="10"
+            step="0.5"
+            class="form-control range"
+          />
+        </div>
+
+        <!-- 🔥 NUEVO: URL de la Imagen -->
+        <div class="form-group">
+          <label>URL de la Imagen (póster)</label>
+          <input
+            type="url"
+            [(ngModel)]="pelicula.imagen"
+            name="imagen"
+            placeholder="https://ejemplo.com/poster.jpg"
+            class="form-control"
+            [class.error]="pelicula.imagen && !imagenValida"
+          />
+          <small class="hint" *ngIf="!pelicula.imagen">
+            Opcional. URL del póster de la película
+          </small>
+          <small class="error-message" *ngIf="pelicula.imagen && !imagenValida">
+            ⚠️ Ingresa una URL válida (http:// o https://)
+          </small>
+        </div>
+
+        <!-- Vista previa de la imagen -->
+        <div class="preview-container" *ngIf="pelicula.imagen && imagenValida">
+          <p class="preview-label">📷 Vista previa del póster:</p>
+          <img 
+            [src]="pelicula.imagen" 
+            [alt]="pelicula.titulo || 'Vista previa'"
+            class="preview-image"
+            (error)="pelicula.imagen = ''"
+          />
+        </div>
+
+        <!-- Botones -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn-primary" 
+            [disabled]="!form.valid || (pelicula.imagen && !imagenValida)"
+          >
+            {{ tituloBoton }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="onCancelar()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

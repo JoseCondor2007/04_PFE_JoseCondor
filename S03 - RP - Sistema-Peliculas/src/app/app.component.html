@@ -1,0 +1,30 @@
+<!-- Pasar el total de películas al navbar -->
+<app-navbar [totalPeliculas]="peliculas.length"></app-navbar>
+
+<div class="app-container">
+  <div class="app-header">
+    <div class="header-left">
+      <h1 class="page-title">Películas</h1>
+    </div>
+    <div class="header-tabs">
+      <button class="tab active">En cartelera</button>
+      <button class="tab">Próximamente</button>
+      <button class="tab">Concierto</button>
+    </div>
+    <button class="btn-add" (click)="mostrarFormularioAgregar()">
+      ➕ Agregar
+    </button>
+  </div>
+
+  <app-formulario
+    *ngIf="mostrarFormulario"
+    (guardar)="guardarPelicula($event)"
+    (cancelar)="cancelarEdicion()"
+  ></app-formulario>
+
+  <app-lista
+    [peliculas]="peliculas"
+    (editar)="editarPelicula($event)"
+    (eliminar)="eliminarPelicula($event)"
+  ></app-lista>
+</div>
