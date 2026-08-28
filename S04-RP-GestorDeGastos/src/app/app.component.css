@@ -1,0 +1,211 @@
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.contenedor {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ===== HEADER (H1) ===== */
+header {
+  text-align: center;
+  padding: 20px 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+header h1::before {
+  content: '💰 ';
+}
+
+header p {
+  color: #94a3b8;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* ===== FORMULARIO ===== */
+.formulario-section {
+  background: #1e293b;
+  padding: 24px 28px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.formulario-section h2 {
+  color: #ffffff;
+  margin: 0 0 18px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: #cbd5e1;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.form-group input::placeholder {
+  color: #64748b;
+}
+
+.form-group select option {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+/* ===== BOTÓN AGREGAR ===== */
+.btn-agregar {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  margin-top: 4px;
+}
+
+.btn-agregar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.btn-agregar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== LISTA DE GASTOS ===== */
+.lista-section {
+  margin-top: 10px;
+}
+
+.lista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lista-header h2 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.contador {
+  background: #334155;
+  color: #cbd5e1;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== GRID DE GASTOS ===== */
+.gastos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* ===== MENSAJE VACÍO ===== */
+.mensaje-vacio {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+  background: #1e293b;
+  border-radius: 12px;
+  border: 1px dashed #334155;
+}
+
+.mensaje-vacio p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .contenedor {
+    padding: 16px 12px 30px;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  .formulario-section {
+    padding: 18px 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .lista-header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .btn-agregar {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
