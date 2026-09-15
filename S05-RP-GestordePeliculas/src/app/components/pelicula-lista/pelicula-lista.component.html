@@ -1,0 +1,33 @@
+<div class="catalog-container">
+  <div class="section-header">
+    <h2>EN CARTELERA</h2>
+    <span class="view-all">VER TODO <i class="arrow">→</i></span>
+  </div>
+
+  <!-- Requisito: Renderizado con @for -->
+  <div class="movies-grid">
+    @for (pelicula of peliculas; track pelicula.id) {
+      <div class="movie-card">
+        <div class="poster-wrapper">
+          <img [src]="pelicula.poster" [alt]="pelicula.titulo" class="poster-img">
+          
+          <!-- Requisito: Evaluar calificación con @if -->
+          @if (pelicula.calificacion >= 9) {
+            <div class="rating-badge top-rated">★ {{ pelicula.calificacion }}</div>
+          } @else if (pelicula.calificacion >= 7) {
+            <div class="rating-badge good">★ {{ pelicula.calificacion }}</div>
+          } @else {
+            <div class="rating-badge regular">★ {{ pelicula.calificacion }}</div>
+          }
+        </div>
+        
+        <div class="movie-info">
+          <h3>{{ pelicula.titulo }}</h3>
+          <p class="genre-year">{{ pelicula.genero }} • {{ pelicula.anio }}</p>
+        </div>
+      </div>
+    } @empty {
+      <p class="no-movies">No hay películas disponibles en el catálogo.</p>
+    }
+  </div>
+</div>
