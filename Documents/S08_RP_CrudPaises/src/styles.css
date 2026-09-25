@@ -1,8 +1,0 @@
-/* Estilos globales del contenedor principal */
-:host {
-  display: block;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f9;
-  min-height: 100vh;
-  padding: 20px;
-}
