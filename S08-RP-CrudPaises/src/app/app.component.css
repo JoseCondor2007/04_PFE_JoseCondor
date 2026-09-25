@@ -1,0 +1,7 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0b2e 0%, #2d0a3f 50%, #4a0d4a 100%);
+  font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+  color: #ffffff;
+}
