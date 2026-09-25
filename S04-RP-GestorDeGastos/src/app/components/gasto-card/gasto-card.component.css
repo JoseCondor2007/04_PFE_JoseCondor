@@ -1,0 +1,131 @@
+.gasto-card {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 16px 20px;
+  border-left: 4px solid #3b82f6;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gasto-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== CLASE DINÁMICA [class] ===== */
+.gasto-elevado {
+  border-left-color: #ef4444;
+  background: #1e1a2e;
+}
+
+.gasto-controlado {
+  border-left-color: #10b981;
+  background: #1e293b;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-titulo {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.card-categoria {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  background: #334155;
+  padding: 2px 12px;
+  border-radius: 12px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.card-monto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f5a623;
+  white-space: nowrap;
+}
+
+.gasto-elevado .card-monto {
+  color: #ef4444;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-fecha {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* ===== MENSAJE DINÁMICO ===== */
+.mensaje-elevado {
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.mensaje-controlado {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.btn-eliminar {
+  margin-top: 12px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.btn-eliminar:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    flex-direction: column;
+  }
+  .card-monto {
+    font-size: 1rem;
+  }
+  .card-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

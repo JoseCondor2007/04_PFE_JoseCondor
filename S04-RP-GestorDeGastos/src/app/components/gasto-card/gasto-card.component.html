@@ -1,0 +1,25 @@
+<!-- ===== TARJETA / ITEM (L) ===== -->
+<div class="gasto-card" [class]="claseGasto">
+  <div class="card-header">
+    <div class="card-info">
+      <h3 class="card-titulo">{{ gasto.descripcion }}</h3>
+      <span class="card-categoria">{{ gasto.categoria }}</span>
+    </div>
+    <span class="card-monto">S/ {{ gasto.monto | number:'1.2-2' }}</span>
+  </div>
+
+  <div class="card-body">
+    <span class="card-fecha">📅 {{ gasto.fecha }}</span>
+    
+    <!-- ===== MENSAJE DINÁMICO (M) con @if ===== -->
+    @if (esGastoElevado) {
+      <span class="mensaje-elevado">⚠️ Gasto elevado</span>
+    } @else {
+      <span class="mensaje-controlado">✅ Gasto controlado</span>
+    }
+  </div>
+
+  <button class="btn-eliminar" (click)="eliminar.emit(gasto.id)">
+    🗑️ Eliminar
+  </button>
+</div>

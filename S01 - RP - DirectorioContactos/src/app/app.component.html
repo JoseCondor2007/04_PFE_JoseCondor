@@ -1,0 +1,82 @@
+<div class="main-container">
+
+  <!-- CABECERA: Título y descripción -->
+  <header class="header-card">
+    <h1>{{ nombreSistema }} — {{ tituloPrincipal }}</h1>
+    <p>{{ descripcionSistema }}</p>
+  </header>
+
+  <!-- SECCIÓN 1 DELIMITADA: Tarjetas con Contadores y Métricas -->
+  <section class="content-section">
+    <h2>Indicadores y Métricas del Sistema</h2>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <h3>Total Registros (Contador)</h3>
+        <p class="metric-value">{{ totalContactos }}</p>
+      </div>
+      <div class="metric-box">
+        <h3>Personal Activo (Contador)</h3>
+        <p class="metric-value">{{ personalActivo }}</p>
+      </div>
+      <div class="metric-box">
+        <h3>Disponibilidad (Métrica)</h3>
+        <p class="metric-value">{{ tasaDisponibilidad }}%</p>
+      </div>
+      <div class="metric-box">
+        <h3>Eficiencia (Métrica)</h3>
+        <p class="metric-value">{{ eficienciaRed }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2 DELIMITADA: Panel de Control, Botones Interactivos y Tabla -->
+  <section class="content-section">
+    <div class="section-toolbar">
+      <h2>Panel Operativo y Colaboradores</h2>
+      
+      <!-- 2 Botones Interactivos -->
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="sincronizarDatos()">Sincronizar</button>
+        <button class="btn btn-secondary" (click)="alternarMetrica()">Actualizar Métrica</button>
+      </div>
+    </div>
+
+    <!-- Banner de notificación interactiva -->
+    <div class="status-banner">
+      <p>💡 <strong>Estado:</strong> {{ mensajeEstado }}</p>
+    </div>
+
+    <!-- Listado usando *ngFor -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Colaborador</th>
+            <th>Cargo</th>
+            <th>Área</th>
+            <th>Correo Institucional</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of listaContactos">
+            <td><strong>{{ c.nombre }}</strong></td>
+            <td>{{ c.cargo }}</td>
+            <td><span class="badge-area">{{ c.area }}</span></td>
+            <td>{{ c.correo }}</td>
+            <td>
+              <span class="dot" [class.green]="c.estado === 'Disponible'" [class.yellow]="c.estado === 'En Reunión'"></span>
+              {{ c.estado }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PIE DE PÁGINA: Nombre obligatorio del estudiante -->
+  <footer class="footer">
+    <p>Desarrollado por <strong>José Manuel Cóndor Alcalá</strong> — Programación Front-end</p>
+  </footer>
+
+</div>

@@ -1,0 +1,10 @@
+<div class="lista-container">
+  <div class="lista-grid">
+    <app-card
+      *ngFor="let pelicula of peliculas"
+      [pelicula]="pelicula"
+      (editar)="editar.emit($event)"
+      (eliminar)="eliminar.emit($event)"
+    ></app-card>
+  </div>
+</div>

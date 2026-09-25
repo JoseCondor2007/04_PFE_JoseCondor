@@ -1,0 +1,69 @@
+/* src/styles.css - Estilos globales oscuros */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: #0a0a0f;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: #ffffff;
+}
+
+body {
+  background: linear-gradient(180deg, #0a0a0f 0%, #14141e 50%, #0a0a0f 100%);
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e94560, #f5a623);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e94560;
+}
+
+/* Enlaces */
+a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #f5a623;
+}
+
+/* Contenedor general */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Botón principal */
+.btn-primary {
+  background: linear-gradient(135deg, #e94560, #f5a623);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
+}

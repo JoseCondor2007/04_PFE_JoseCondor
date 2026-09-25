@@ -1,0 +1,105 @@
+<!-- ===== NAVBAR ===== -->
+<app-navbar [totalGastos]="totalGastos" [cantidadGastos]="gastos.length"></app-navbar>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<main class="contenedor">
+  
+  <!-- ===== TÍTULO DE LA APP (H1) ===== -->
+  <header>
+    <h1>{{ tituloApp }}</h1>
+    <p>Registra y controla tus gastos diarios de forma sencilla.</p>
+  </header>
+
+  <!-- ===== FORMULARIO (I) ===== -->
+  <section class="formulario-section">
+    <h2>📝 Registrar Gasto</h2>
+    <form (ngSubmit)="agregarGasto()" #formulario="ngForm">
+      <div class="form-row">
+        <!-- Descripción -->
+        <div class="form-group">
+          <label>Descripción</label>
+          <input
+            type="text"
+            [(ngModel)]="nuevoGasto.descripcion"
+            name="descripcion"
+            placeholder="Ej: Compra de supermercado"
+            required
+          />
+        </div>
+
+        <!-- Monto -->
+        <div class="form-group">
+          <label>Monto (S/)</label>
+          <input
+            type="number"
+            [(ngModel)]="nuevoGasto.monto"
+            name="monto"
+            placeholder="0.00"
+            min="0.01"
+            step="0.01"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Categoría -->
+        <div class="form-group">
+          <label>Categoría</label>
+          <select [(ngModel)]="nuevoGasto.categoria" name="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            @for (cat of categorias; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Fecha -->
+        <div class="form-group">
+          <label>Fecha</label>
+          <input
+            type="date"
+            [(ngModel)]="nuevoGasto.fecha"
+            name="fecha"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- ===== BOTÓN AGREGAR (J) ===== -->
+      <button
+        type="submit"
+        class="btn-agregar"
+        [disabled]="!formularioValido"
+      >
+        ➕ Agregar Gasto
+      </button>
+    </form>
+  </section>
+
+  <!-- ===== LISTA DE GASTOS (K) ===== -->
+  <section class="lista-section">
+    <div class="lista-header">
+      <h2>📋 Lista de Gastos</h2>
+      <span class="contador">{{ gastos.length }} gastos</span>
+    </div>
+
+    <!-- ===== CONDICIONAL @if ===== -->
+    @if (gastos.length === 0) {
+      <div class="mensaje-vacio">
+        <p>No hay gastos registrados. ¡Agrega uno!</p>
+      </div>
+    } @else {
+      <!-- ===== REPETICIÓN @for ===== -->
+      <div class="gastos-grid">
+        @for (gasto of gastos; track gasto.id) {
+          <!-- ===== TARJETA / ITEM (L) ===== -->
+          <app-gasto-card
+            [gasto]="gasto"
+            (eliminar)="eliminarGasto($event)"
+          ></app-gasto-card>
+        }
+      </div>
+    }
+  </section>
+</main>
