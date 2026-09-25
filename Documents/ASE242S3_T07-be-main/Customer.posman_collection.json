@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "4b6c310c-3d12-4f36-a3f2-140b938f3d64",
+		"name": "Cliente API - Restaurante",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consultas de Clientes (GET)",
+			"item": [
+				{
+					"name": "Listar todos los clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"description": "Obtiene la lista completa de todos los clientes registrados."
+				},
+				{
+					"name": "Buscar cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"1"
+							]
+						}
+					},
+					"description": "Obtiene un cliente a partir de su ID (id_customer)."
+				},
+				{
+					"name": "Buscar clientes por apellido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers/lastname/Salgado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"lastname",
+								"Salgado"
+							]
+						}
+					},
+					"description": "Obtiene clientes que coincidan con un apellido específico (Requiere que implementes este método en tu Controller/Service)."
+				},
+				{
+					"name": "Buscar clientes por estado (A/I)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/customers/status/A",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers",
+								"status",
+								"A"
+							]
+						}
+					},
+					"description": "Obtiene clientes por estado ('A' = Activo, 'I' = Inactivo)."
+				}
+			]
+		},
+		{
+			"name": "Operaciones CRUD de Clientes",
+			"item": [
+				{
+					"name": "Crear un nuevo cliente (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Juan\",\n  \"lastname\": \"Perez\",\n  \"documento_identificac\": \"DNI\",\n  \"document_number\": \"87654321\",\n  \"email\": \"juan.perez@example.com\",\n  \"phone\": \"987654321\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"description": "Crea un nuevo cliente. Los campos 'status' y 'createdAt' son automáticos."
+				},
+				{
+					"name": "Actualizar cliente (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_customer\": 1,\n  \"name\": \"Juan Carlos\",\n  \"lastname\": \"Perez Mendoza\",\n  \"documento_identificac\": \"DNI\",\n  \"document_number\": \"87654321\",\n  \"email\": \"j.carlos@example.com\",\n  \"phone\": \"999888777\",\n  \"status\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"description": "Actualiza todos los datos de un cliente existente. Requiere que envíes el 'id_customer' en el cuerpo."
+				},
+				{
+					"name": "Desactivar cliente (PATCH - Eliminación lógica)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_customer\": 1,\n  \"status\": \"I\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"description": "Cambia el estado de un cliente a 'I' (Inactivo) para una eliminación lógica."
+				},
+				{
+					"name": "Restaurar cliente (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_customer\": 1,\n  \"status\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"description": "Cambia el estado de un cliente a 'A' (Activo) para restaurarlo."
+				}
+			]
+		}
+	]
+}
