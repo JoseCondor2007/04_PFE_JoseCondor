@@ -6,28 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PaisService {
-  // URL base de la API
   private apiUrl = 'https://6ab68b20c4c7bb67b918ee9e.mockapi.io/paises';
 
   constructor(private http: HttpClient) { }
 
-  // GET: Obtener todos los países
+  // GET
   obtenerPaises(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  // POST: Registrar un nuevo país
+  // POST: nombre "registrarPais" — pero la URL es solo `apiUrl`
   registrarPais(pais: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/save`, pais);
+    return this.http.post<any>(this.apiUrl, pais);
   }
 
-  // PUT: Actualizar un país existente
+  // PUT: nombre "actualizarPais" — URL `apiUrl/{id}`
   actualizarPais(id: number | string, pais: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/update/${id}`, pais);
+    return this.http.put<any>(`${this.apiUrl}/${id}`, pais);
   }
 
-  // DELETE: Eliminar un país
+  // DELETE: nombre "eliminarPais" — URL `apiUrl/{id}`
   eliminarPais(id: number | string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 }

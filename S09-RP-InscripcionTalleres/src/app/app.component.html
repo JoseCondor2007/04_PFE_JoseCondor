@@ -1,0 +1,219 @@
+<div class="app-container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">Instituto Tech</span>
+    </div>
+    <h1>Sistema de Inscripción a Talleres</h1>
+    <p class="subtitle">Registra tu participación en los talleres tecnológicos</p>
+  </header>
+
+  <!-- BARRA DE PROGRESO SIN LÍMITE -->
+  <section class="progress-section">
+    <div class="progress-header">
+      <span>Progreso de inscripciones</span>
+      <span
+        [class.completo]="cumpleMinimo"
+        [class.desbordado]="porcentajeProgreso > 100">
+        {{ totalInscritos }} / {{ MINIMO_INSCRIPCIONES }}
+        <small *ngIf="porcentajeProgreso > 100">({{ porcentajeProgreso | number:'1.0-0' }}%)</small>
+      </span>
+    </div>
+
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        [style.width.%]="anchoBarra"
+        [class.completo]="cumpleMinimo"
+        [class.desbordado]="porcentajeProgreso > 100">
+      </div>
+
+      <!-- Marcador del mínimo (6) -->
+      <div
+        class="progress-marker"
+        [style.left.%]="(MINIMO_INSCRIPCIONES / REFERENCIA_BARRA) * 100">
+        <span class="marker-label">Mín. {{ MINIMO_INSCRIPCIONES }}</span>
+      </div>
+    </div>
+
+    <p class="progress-message" *ngIf="!cumpleMinimo">
+      ⏳ Faltan <strong>{{ faltantes }}</strong> inscripción(es) para alcanzar el mínimo de {{ MINIMO_INSCRIPCIONES }}.
+    </p>
+
+    <p class="progress-message completo" *ngIf="cumpleMinimo && porcentajeProgreso <= 100">
+      ✅ ¡Mínimo alcanzado! Ya puedes finalizar el registro.
+    </p>
+
+    <p class="progress-message desbordado" *ngIf="porcentajeProgreso > 100">
+      🚀 ¡Excelente! Has superado la referencia con <strong>{{ excedente }}</strong> inscripción(es) adicional(es).
+    </p>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-card total">
+      <span class="stat-number">{{ totalInscritos }}</span>
+      <span class="stat-label">Total Inscritos</span>
+    </div>
+    <div class="stat-card manana">
+      <span class="stat-number">{{ totalManana }}</span>
+      <span class="stat-label">Turno Mañana</span>
+    </div>
+    <div class="stat-card noche">
+      <span class="stat-number">{{ totalNoche }}</span>
+      <span class="stat-label">Turno Noche</span>
+    </div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <section class="card form-card">
+    <h2>Nueva Inscripción</h2>
+
+    <form #formInscripcion="ngForm" (ngSubmit)="registrarInscripcion(formInscripcion)">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre completo *</label>
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="nuevoParticipante.nombre"
+            #nombre="ngModel"
+            required
+            minlength="3"
+            placeholder="Ej. Valery Chumpitaz"
+            [class.invalid]="nombre.invalid && nombre.touched">
+          <small class="error" *ngIf="nombre.invalid && nombre.touched">
+            Mínimo 3 caracteres
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Correo institucional *</label>
+          <input
+            type="email"
+            name="correo"
+            [(ngModel)]="nuevoParticipante.correo"
+            #correo="ngModel"
+            required
+            email
+            placeholder="usuario@instituto.edu"
+            [class.invalid]="correo.invalid && correo.touched">
+          <small class="error" *ngIf="correo.invalid && correo.touched">
+            Ingresa un correo válido
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Especialidad</label>
+          <select name="especialidad" [(ngModel)]="nuevoParticipante.especialidad">
+            <option value="Desarrollo">Desarrollo</option>
+            <option value="Redes">Redes</option>
+            <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Modalidad</label>
+          <select name="modalidad" [(ngModel)]="nuevoParticipante.modalidad">
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Nivel de experiencia</label>
+          <select name="nivel" [(ngModel)]="nuevoParticipante.nivel">
+            <option value="Principiante">Principiante</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Turno</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="turno" value="Mañana" [(ngModel)]="nuevoParticipante.turno">
+              <span>☀️ Mañana</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="turno" value="Noche" [(ngModel)]="nuevoParticipante.turno">
+              <span>🌙 Noche</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="formInscripcion.invalid">
+        Registrar Inscripción
+      </button>
+    </form>
+  </section>
+
+  <!-- TABLA -->
+  <section class="card table-card">
+    <h2>Inscripciones Registradas</h2>
+
+    <div *ngIf="inscripciones.length === 0" class="empty-state">
+      <span class="empty-icon">📋</span>
+      <p>No hay participantes registrados todavía.</p>
+      <small>Necesitas ingresar al menos <strong>{{ MINIMO_INSCRIPCIONES }}</strong> participantes.</small>
+    </div>
+
+    <div class="table-wrapper" *ngIf="inscripciones.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Especialidad</th>
+            <th>Turno</th>
+            <th>Modalidad</th>
+            <th>Nivel</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inscripciones">
+            <td>{{ item.id }}</td>
+            <td class="bold">{{ item.nombre }}</td>
+            <td>{{ item.correo }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'badge-dev': item.especialidad === 'Desarrollo',
+                'badge-red': item.especialidad === 'Redes',
+                'badge-ia': item.especialidad === 'Inteligencia Artificial'
+              }">{{ item.especialidad }}</span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'badge-manana': item.turno === 'Mañana',
+                'badge-noche': item.turno === 'Noche'
+              }">{{ item.turno }}</span>
+            </td>
+            <td>{{ item.modalidad }}</td>
+            <td>{{ item.nivel }}</td>
+            <td>
+              <button class="btn-delete" (click)="eliminarInscripcion(item.id)">✕</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botón finalizar -->
+    <div class="actions-final" *ngIf="inscripciones.length > 0">
+      <button
+        class="btn-finalizar"
+        [disabled]="!cumpleMinimo"
+        (click)="finalizarRegistro()">
+        {{ cumpleMinimo ? '✅ Finalizar Registro' : '🔒 Mínimo ' + MINIMO_INSCRIPCIONES + ' requeridos' }}
+      </button>
+    </div>
+  </section>
+
+</div>
