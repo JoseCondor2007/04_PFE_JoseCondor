@@ -1,0 +1,113 @@
+<div class="pagina">
+
+  <!-- ============ HEADER / PORTADA (estilo imagen) ============ -->
+  <header class="portada">
+    <div class="portada-imagen">
+      <img [src]="imagenPortada" alt="Mascota feliz">
+      <div class="circulo-amarillo"></div>
+    </div>
+
+    <div class="portada-texto">
+      <h1 class="titulo-cursiva">Registro Clínico<br>de Mascotas</h1>
+      <p class="subtitulo">
+        Sistema de gestión veterinaria para el control de pacientes,
+        propietarios y fichas clínicas. Registra, valida y administra
+        la información de cada mascota en tiempo real.
+      </p>
+      <a href="#formulario" class="btn-amarillo">Nueva Ficha</a>
+    </div>
+  </header>
+
+  <!-- ============ FORMULARIO REACTIVO ============ -->
+  <section class="contenedor" id="formulario">
+    <h2 class="seccion-titulo">📋 Nueva Ficha Clínica</h2>
+
+    <form [formGroup]="miFormulario" (ngSubmit)="guardar()">
+
+      <!-- Nombre -->
+      <div class="campo">
+        <label for="nombre">Nombre de la Mascota</label>
+        <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Firulais">
+        <small class="error" *ngIf="nombre.touched && nombre.invalid">
+          <span *ngIf="nombre.errors?.['required']">⚠ El nombre es obligatorio.</span>
+          <span *ngIf="nombre.errors?.['minlength']">⚠ Mínimo 2 caracteres.</span>
+        </small>
+      </div>
+
+      <!-- Especie -->
+      <div class="campo">
+        <label for="especie">Especie</label>
+        <select id="especie" formControlName="especie">
+          <option value="" disabled selected>-- Selecciona una especie --</option>
+          <option *ngFor="let esp of especies" [value]="esp">{{ esp }}</option>
+        </select>
+        <small class="error" *ngIf="especie.touched && especie.invalid">
+          ⚠ Debes seleccionar una especie.
+        </small>
+      </div>
+
+      <!-- Edad -->
+      <div class="campo">
+        <label for="edad">Edad (años)</label>
+        <input id="edad" type="number" formControlName="edad" placeholder="0 - 25">
+        <small class="error" *ngIf="edad.touched && edad.invalid">
+          <span *ngIf="edad.errors?.['required']">⚠ La edad es obligatoria.</span>
+          <span *ngIf="edad.errors?.['min']">⚠ La edad no puede ser negativa.</span>
+          <span *ngIf="edad.errors?.['max']">⚠ La edad máxima es 25 años.</span>
+        </small>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="campo">
+        <label for="telefono">Teléfono del Propietario</label>
+        <input id="telefono" type="text" formControlName="telefono" maxlength="9" placeholder="9 dígitos">
+        <small class="error" *ngIf="telefono.touched && telefono.invalid">
+          <span *ngIf="telefono.errors?.['required']">⚠ El teléfono es obligatorio.</span>
+          <span *ngIf="telefono.errors?.['pattern']">⚠ Debe contener exactamente 9 dígitos numéricos.</span>
+        </small>
+      </div>
+
+      <button type="submit" class="btn-amarillo btn-submit" [disabled]="miFormulario.invalid">
+        REGISTRAR PACIENTE
+      </button>
+    </form>
+
+    <p class="exito" *ngIf="mensajeExito">{{ mensajeExito }}</p>
+  </section>
+
+  <!-- ============ TABLA DINÁMICA ============ -->
+  <section class="contenedor tabla-seccion" *ngIf="listaMascotas.length > 0">
+    <h2 class="seccion-titulo">🐾 Pacientes Atendidos ({{ listaMascotas.length }})</h2>
+
+    <table class="tabla-mascotas">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Especie</th>
+          <th>Edad</th>
+          <th>Teléfono</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of listaMascotas; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ m.nombre }}</td>
+          <td><span [ngClass]="getClaseEspecie(m.especie)">{{ m.especie }}</span></td>
+          <td>{{ m.edad }} año(s)</td>
+          <td>{{ m.telefono }}</td>
+          <td>
+            <button class="btn-eliminar" (click)="eliminar(m.id)">Dar de alta / Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Mensaje cuando no hay registros -->
+  <section class="contenedor vacio" *ngIf="listaMascotas.length === 0">
+    <p>🐶 Aún no hay pacientes registrados. ¡Comienza llenando la ficha clínica!</p>
+  </section>
+
+</div>

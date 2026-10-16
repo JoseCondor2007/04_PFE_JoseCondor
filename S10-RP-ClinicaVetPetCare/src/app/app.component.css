@@ -1,0 +1,375 @@
+/* ---------- RESET LOCAL Y BASE ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:host {
+  display: block;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #2b2b2b;
+  min-height: 100vh;
+  background: transparent; /* deja ver las huellas del body */
+}
+
+.pagina {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ============================================================
+   PORTADA (header estilo imagen "Ropa para perros")
+   ============================================================ */
+.portada {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Huella decorativa grande detrás del título */
+.portada::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23F2C200' fill-opacity='0.35'%3E%3Cellipse cx='50' cy='68' rx='16' ry='13'/%3E%3Cellipse cx='28' cy='42' rx='6' ry='8'/%3E%3Cellipse cx='42' cy='33' rx='6' ry='8'/%3E%3Cellipse cx='58' cy='33' rx='6' ry='8'/%3E%3Cellipse cx='72' cy='42' rx='6' ry='8'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(-20deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.portada-imagen {
+  position: relative;
+  height: 420px;
+  z-index: 1;
+}
+
+.portada-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.circulo-amarillo {
+  position: absolute;
+  top: 30px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: #F2C200;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.portada-texto {
+  padding-left: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.titulo-cursiva {
+  font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+  font-size: 4rem;
+  line-height: 1.05;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.subtitulo {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  max-width: 420px;
+}
+
+/* ============================================================
+   BOTÓN AMARILLO (estilo imagen)
+   ============================================================ */
+.btn-amarillo {
+  display: inline-block;
+  background: #F2C200;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-decoration: none;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+.btn-amarillo:hover:not(:disabled) {
+  background: #d9ad00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(242,194,0,0.4);
+}
+
+/* ============================================================
+   CONTENEDORES (formulario y tabla)
+   ============================================================ */
+.contenedor {
+  max-width: 620px;
+  margin: 40px auto;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.94); /* blanco al 94% sobre las huellas */
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.seccion-titulo {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-bottom: 22px;
+  border-left: 5px solid #F2C200;
+  padding-left: 14px;
+}
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+form {
+  display: grid;
+  gap: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+input, select {
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #F2C200;
+  box-shadow: 0 0 0 3px rgba(242,194,0,0.2);
+}
+
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border-color: #dc2626;
+  background: #fff5f5;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-family: 'Arial', sans-serif;
+  font-style: italic;
+}
+
+.btn-submit {
+  width: 100%;
+  margin-top: 8px;
+  padding: 16px;
+  font-size: 0.9rem;
+}
+
+.btn-submit:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.exito {
+  margin-top: 18px;
+  padding: 12px;
+  background: #dcfce7;
+  color: #166534;
+  border-left: 4px solid #16a34a;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   TABLA DINÁMICA
+   ============================================================ */
+.tabla-seccion {
+  max-width: 900px;
+}
+
+.tabla-mascotas {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.92rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-mascotas thead {
+  background: #1a1a1a;
+  color: #F2C200;
+}
+
+.tabla-mascotas th,
+.tabla-mascotas td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-mascotas tbody tr {
+  transition: background 0.2s;
+}
+
+.tabla-mascotas tbody tr:hover {
+  background: #fffbe6;
+}
+
+.tabla-mascotas tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================================
+   BADGES POR ESPECIE
+   ============================================================ */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-perro { background: #8b5a2b; }
+.badge-gato  { background: #6b7280; }
+.badge-ave   { background: #2563eb; }
+.badge-otro  { background: #7c3aed; }
+
+/* ============================================================
+   BOTÓN ELIMINAR
+   ============================================================ */
+.btn-eliminar {
+  background: transparent;
+  border: 1.5px solid #dc2626;
+  color: #dc2626;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Arial', sans-serif;
+  transition: all 0.2s;
+}
+
+.btn-eliminar:hover {
+  background: #dc2626;
+  color: #fff;
+}
+
+/* ============================================================
+   ESTADO VACÍO
+   ============================================================ */
+.vacio {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  padding: 40px 20px;
+  font-size: 1rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .portada {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .portada-imagen {
+    height: 280px;
+  }
+
+  .titulo-cursiva {
+    font-size: 2.6rem;
+  }
+
+  .circulo-amarillo {
+    width: 120px;
+    height: 120px;
+    right: -10px;
+  }
+
+  .portada::before {
+    width: 160px;
+    height: 160px;
+    top: -20px;
+    right: -30px;
+  }
+
+  .contenedor {
+    padding: 22px;
+    margin: 25px auto;
+  }
+
+  .tabla-mascotas {
+    font-size: 0.78rem;
+  }
+
+  .tabla-mascotas th,
+  .tabla-mascotas td {
+    padding: 8px;
+  }
+
+  .btn-eliminar {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo-cursiva { font-size: 2rem; }
+  .subtitulo { font-size: 0.9rem; }
+  .seccion-titulo { font-size: 1.2rem; }
+}

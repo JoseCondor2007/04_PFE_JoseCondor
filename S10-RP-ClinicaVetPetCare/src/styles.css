@@ -1,0 +1,48 @@
+/* ---------- RESET BÁSICO ---------- */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #2b2b2b;
+  scroll-behavior: smooth;
+}
+
+/* ---------- FONDO GLOBAL CON HUELLAS DE ANIMALES ---------- */
+body {
+  background-color: #fffdf5; /* blanco cálido base */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23F2C200' fill-opacity='0.14'%3E%3C!-- Huella grande 1 --%3E%3Cg transform='translate(30 30) rotate(-15)'%3E%3Cellipse cx='0' cy='12' rx='13' ry='10'/%3E%3Cellipse cx='-16' cy='-8' rx='5' ry='6.5'/%3E%3Cellipse cx='-6' cy='-15' rx='5' ry='6.5'/%3E%3Cellipse cx='6' cy='-15' rx='5' ry='6.5'/%3E%3Cellipse cx='16' cy='-8' rx='5' ry='6.5'/%3E%3C/g%3E%3C!-- Huella pequeña 2 --%3E%3Cg transform='translate(100 85) rotate(25)'%3E%3Cellipse cx='0' cy='8' rx='9' ry='7'/%3E%3Cellipse cx='-11' cy='-6' rx='3.5' ry='4.5'/%3E%3Cellipse cx='-4' cy='-11' rx='3.5' ry='4.5'/%3E%3Cellipse cx='4' cy='-11' rx='3.5' ry='4.5'/%3E%3Cellipse cx='11' cy='-6' rx='3.5' ry='4.5'/%3E%3C/g%3E%3C!-- Huella mini 3 --%3E%3Cg transform='translate(95 20) rotate(60)'%3E%3Cellipse cx='0' cy='6' rx='7' ry='5.5'/%3E%3Cellipse cx='-8' cy='-4' rx='3' ry='4'/%3E%3Cellipse cx='-3' cy='-8' rx='3' ry='4'/%3E%3Cellipse cx='3' cy='-8' rx='3' ry='4'/%3E%3Cellipse cx='8' cy='-4' rx='3' ry='4'/%3E%3C/g%3E%3C!-- Huella mini 4 --%3E%3Cg transform='translate(20 100) rotate(-45)'%3E%3Cellipse cx='0' cy='6' rx='7' ry='5.5'/%3E%3Cellipse cx='-8' cy='-4' rx='3' ry='4'/%3E%3Cellipse cx='-3' cy='-8' rx='3' ry='4'/%3E%3Cellipse cx='3' cy='-8' rx='3' ry='4'/%3E%3Cellipse cx='8' cy='-4' rx='3' ry='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ---------- HOST PRINCIPAL ---------- */
+app-root {
+  display: block;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.5); /* capa blanca suave sobre las huellas */
+}
+
+/* ---------- SCROLLBAR PERSONALIZADA (opcional) ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fffdf5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F2C200;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d9ad00;
+}
+
+/* ---------- SELECCIÓN DE TEXTO ---------- */
+::selection {
+  background: #F2C200;
+  color: #1a1a1a;
+}
