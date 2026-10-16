@@ -1,3 +1,10 @@
+/* ============================================================
+   ESTILOS DEL COMPONENTE PRINCIPAL
+   S10 - RP - VetCare Register
+   Sistema de Registro Clínico de Mascotas
+   Estudiante 04: Condor Alcala, Jose Manuel
+   ============================================================ */
+
 /* ---------- RESET LOCAL Y BASE ---------- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,11 +23,11 @@
 }
 
 /* ============================================================
-   PORTADA (header estilo imagen "Ropa para perros")
+   PORTADA (header con carrusel + texto)
    ============================================================ */
 .portada {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;   /* ← LAS 2 COLUMNAS */
   gap: 40px;
   align-items: center;
   padding: 40px 20px;
@@ -44,20 +51,133 @@
   z-index: 0;
 }
 
-.portada-imagen {
+/* ============================================================
+   CARRUSEL DE ESPECIES (columna izquierda)
+   ============================================================ */
+.portada-imagen.carrusel {
   position: relative;
   height: 420px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
   z-index: 1;
 }
 
-.portada-imagen img {
+/* Contenedor de slides */
+.slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Cada slide: apilado uno encima del otro */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.slide.activo {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 4px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  display: block;
 }
 
+/* Overlay degradado para que se lea el nombre */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.15) 40%,
+    rgba(0,0,0,0) 70%
+  );
+}
+
+/* Nombre de la especie sobre la imagen */
+.slide-nombre {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  color: #fff;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  z-index: 2;
+}
+
+/* Flechas de navegación */
+.carrusel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(242,194,0,0.85);
+  color: #1a1a1a;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.carrusel-btn:hover {
+  background: #F2C200;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carrusel-btn.prev { left: 12px; }
+.carrusel-btn.next { right: 12px; }
+
+/* Indicadores (dots) */
+.indicadores {
+  position: absolute;
+  bottom: 14px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.dot:hover {
+  background: rgba(255,255,255,0.8);
+}
+
+.dot.activo {
+  background: #F2C200;
+  transform: scale(1.3);
+  border-color: #fff;
+}
+
+/* Círculo amarillo decorativo */
 .circulo-amarillo {
   position: absolute;
   top: 30px;
@@ -67,8 +187,13 @@
   background: #F2C200;
   border-radius: 50%;
   z-index: -1;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
+/* ============================================================
+   TEXTO DE LA PORTADA (columna derecha)
+   ============================================================ */
 .portada-texto {
   padding-left: 20px;
   position: relative;
@@ -76,7 +201,7 @@
 }
 
 .titulo-cursiva {
-  font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+  font-family: 'Brush Script MT', 'Lucida Handwriting', 'Dancing Script', cursive;
   font-size: 4rem;
   line-height: 1.05;
   color: #1a1a1a;
@@ -95,7 +220,7 @@
 }
 
 /* ============================================================
-   BOTÓN AMARILLO (estilo imagen)
+   BOTÓN AMARILLO (CTA)
    ============================================================ */
 .btn-amarillo {
   display: inline-block;
@@ -105,7 +230,7 @@
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 2px;
-  text-decoration: none;
+  text-decoration: none;   /* ← quita el subrayado azul */
   padding: 14px 28px;
   border: none;
   cursor: pointer;
@@ -126,7 +251,7 @@
   max-width: 620px;
   margin: 40px auto;
   padding: 32px;
-  background: rgba(255, 255, 255, 0.94); /* blanco al 94% sobre las huellas */
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 10px;
   box-shadow: 0 6px 24px rgba(0,0,0,0.08);
   backdrop-filter: blur(3px);
@@ -280,10 +405,13 @@ select.ng-invalid.ng-touched {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.badge-perro { background: #8b5a2b; }
-.badge-gato  { background: #6b7280; }
-.badge-ave   { background: #2563eb; }
-.badge-otro  { background: #7c3aed; }
+.badge-perro    { background: #8b5a2b; }
+.badge-gato     { background: #6b7280; }
+.badge-ave      { background: #2563eb; }
+.badge-conejo   { background: #db7093; }
+.badge-hamster  { background: #f59e0b; }
+.badge-reptil   { background: #16a34a; }
+.badge-otro     { background: #7c3aed; }
 
 /* ============================================================
    BOTÓN ELIMINAR
@@ -322,17 +450,29 @@ select.ng-invalid.ng-touched {
    ============================================================ */
 @media (max-width: 768px) {
   .portada {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;   /* 1 sola columna en móvil */
     gap: 20px;
     padding: 20px 0;
   }
 
-  .portada-imagen {
+  .portada-imagen.carrusel {
     height: 280px;
   }
 
   .titulo-cursiva {
     font-size: 2.6rem;
+  }
+
+  .slide-nombre {
+    font-size: 1.3rem;
+    bottom: 14px;
+    left: 16px;
+  }
+
+  .carrusel-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
   }
 
   .circulo-amarillo {

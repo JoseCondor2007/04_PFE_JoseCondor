@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Mascota } from './models/mascota.model';
 
@@ -7,7 +7,7 @@ import { Mascota } from './models/mascota.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   miFormulario!: FormGroup;
   listaMascotas: Mascota[] = [];
@@ -17,8 +17,36 @@ export class AppComponent implements OnInit {
   // Especies disponibles para el dropdown
   especies: string[] = ['Perro', 'Gato', 'Ave', 'Conejo', 'Hámster', 'Reptil'];
 
-  // Imagen temática de la portada (perrito)
-  imagenPortada = 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=800';
+    // ===== CARRUSEL DE ESPECIES =====
+  imagenesEspecies = [
+    {
+      nombre: 'Perro',
+      url: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=900'
+    },
+    {
+      nombre: 'Gato',
+      url: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=900'
+    },
+    {
+      nombre: 'Ave',
+      url: 'https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg?auto=compress&cs=tinysrgb&w=900'
+    },
+    {
+      nombre: 'Conejo',
+      url: 'https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg?auto=compress&cs=tinysrgb&w=900'
+    },
+    {
+      nombre: 'Hámster',
+      url: 'https://clinicavesal.es/wp-content/uploads/2018/06/cuidados-hamster.jpg'
+    },
+    {
+      nombre: 'Reptil',
+      url: 'https://images.pexels.com/photos/567540/pexels-photo-567540.jpeg?auto=compress&cs=tinysrgb&w=900'
+    }
+  ];
+
+  indiceActual = 0;
+  private intervalo?: ReturnType<typeof setInterval>;
 
   constructor(private fb: FormBuilder) {}
 
@@ -29,9 +57,44 @@ export class AppComponent implements OnInit {
       edad:     [null, [Validators.required, Validators.min(0), Validators.max(25)]],
       telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]]
     });
+
+    // Inicia el carrusel automático cada 3 segundos
+    this.iniciarCarrusel();
   }
 
-  // Getters cómodos para el HTML
+  ngOnDestroy(): void {
+    this.detenerCarrusel();
+  }
+
+  // ===== LÓGICA DEL CARRUSEL =====
+  iniciarCarrusel(): void {
+    this.intervalo = setInterval(() => {
+      this.siguiente();
+    }, 3000);
+  }
+
+  detenerCarrusel(): void {
+    if (this.intervalo) {
+      clearInterval(this.intervalo);
+    }
+  }
+
+  siguiente(): void {
+    this.indiceActual = (this.indiceActual + 1) % this.imagenesEspecies.length;
+  }
+
+  anterior(): void {
+    this.indiceActual =
+      (this.indiceActual - 1 + this.imagenesEspecies.length) % this.imagenesEspecies.length;
+  }
+
+  irA(index: number): void {
+    this.indiceActual = index;
+    this.detenerCarrusel();
+    this.iniciarCarrusel();
+  }
+
+  // ===== GETTERS DEL FORMULARIO =====
   get nombre()   { return this.miFormulario.get('nombre')!; }
   get especie()  { return this.miFormulario.get('especie')!; }
   get edad()     { return this.miFormulario.get('edad')!; }
@@ -54,8 +117,6 @@ export class AppComponent implements OnInit {
 
     this.listaMascotas.push(nuevaMascota);
     this.mensajeExito = `✅ Paciente "${nuevaMascota.nombre}" registrado correctamente.`;
-
-    // Reset manual (requisito del reto)
     this.miFormulario.reset();
 
     setTimeout(() => (this.mensajeExito = ''), 3000);
@@ -65,12 +126,15 @@ export class AppComponent implements OnInit {
     this.listaMascotas = this.listaMascotas.filter(m => m.id !== id);
   }
 
-  // Clase CSS dinámica para el badge de especie
   getClaseEspecie(especie: string): string {
     switch (especie.toLowerCase()) {
       case 'perro':   return 'badge badge-perro';
       case 'gato':    return 'badge badge-gato';
       case 'ave':     return 'badge badge-ave';
+      case 'conejo':  return 'badge badge-conejo';
+      case 'hámster':
+      case 'hamster': return 'badge badge-hamster';
+      case 'reptil':  return 'badge badge-reptil';
       default:        return 'badge badge-otro';
     }
   }

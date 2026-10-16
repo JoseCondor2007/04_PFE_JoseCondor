@@ -1,12 +1,37 @@
 <div class="pagina">
 
-  <!-- ============ HEADER / PORTADA (estilo imagen) ============ -->
+  <!-- ============================================================
+       PORTADA CON CARRUSEL
+       ============================================================ -->
   <header class="portada">
-    <div class="portada-imagen">
-      <img [src]="imagenPortada" alt="Mascota feliz">
-      <div class="circulo-amarillo"></div>
+
+    <!-- COLUMNA IZQUIERDA: Carrusel -->
+    <div class="portada-imagen carrusel"
+         (mouseenter)="detenerCarrusel()"
+         (mouseleave)="iniciarCarrusel()">
+
+      <div class="slides">
+        <div class="slide"
+             *ngFor="let img of imagenesEspecies; let i = index"
+             [class.activo]="i === indiceActual">
+          <img [src]="img.url" [alt]="img.nombre">
+          <div class="slide-overlay"></div>
+          <span class="slide-nombre">{{ img.nombre }}</span>
+        </div>
+      </div>
+
+      <button class="carrusel-btn prev" (click)="anterior()" aria-label="Anterior">❮</button>
+      <button class="carrusel-btn next" (click)="siguiente()" aria-label="Siguiente">❯</button>
+
+      <div class="indicadores">
+        <span *ngFor="let img of imagenesEspecies; let i = index"
+              class="dot"
+              [class.activo]="i === indiceActual"
+              (click)="irA(i)"></span>
+      </div>
     </div>
 
+    <!-- COLUMNA DERECHA: Texto -->
     <div class="portada-texto">
       <h1 class="titulo-cursiva">Registro Clínico<br>de Mascotas</h1>
       <p class="subtitulo">
@@ -14,17 +39,19 @@
         propietarios y fichas clínicas. Registra, valida y administra
         la información de cada mascota en tiempo real.
       </p>
-      <a href="#formulario" class="btn-amarillo">Nueva Ficha</a>
+      <a href="#formulario" class="btn-amarillo">MÁS INFORMACIÓN</a>
     </div>
   </header>
 
-  <!-- ============ FORMULARIO REACTIVO ============ -->
+  <!-- ============================================================
+       FORMULARIO REACTIVO
+       ============================================================ -->
   <section class="contenedor" id="formulario">
     <h2 class="seccion-titulo">📋 Nueva Ficha Clínica</h2>
 
     <form [formGroup]="miFormulario" (ngSubmit)="guardar()">
 
-      <!-- Nombre -->
+      <!-- Campo: Nombre -->
       <div class="campo">
         <label for="nombre">Nombre de la Mascota</label>
         <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Firulais">
@@ -34,7 +61,7 @@
         </small>
       </div>
 
-      <!-- Especie -->
+      <!-- Campo: Especie (dropdown) -->
       <div class="campo">
         <label for="especie">Especie</label>
         <select id="especie" formControlName="especie">
@@ -46,10 +73,10 @@
         </small>
       </div>
 
-      <!-- Edad -->
+      <!-- Campo: Edad -->
       <div class="campo">
         <label for="edad">Edad (años)</label>
-        <input id="edad" type="number" formControlName="edad" placeholder="0 - 25">
+        <input id="edad" type="number" formControlName="edad" placeholder="0 - 25" min="0" max="25">
         <small class="error" *ngIf="edad.touched && edad.invalid">
           <span *ngIf="edad.errors?.['required']">⚠ La edad es obligatoria.</span>
           <span *ngIf="edad.errors?.['min']">⚠ La edad no puede ser negativa.</span>
@@ -57,25 +84,30 @@
         </small>
       </div>
 
-      <!-- Teléfono -->
+      <!-- Campo: Teléfono -->
       <div class="campo">
         <label for="telefono">Teléfono del Propietario</label>
-        <input id="telefono" type="text" formControlName="telefono" maxlength="9" placeholder="9 dígitos">
+        <input id="telefono" type="text" formControlName="telefono" maxlength="9"
+               placeholder="9 dígitos numéricos" inputmode="numeric">
         <small class="error" *ngIf="telefono.touched && telefono.invalid">
           <span *ngIf="telefono.errors?.['required']">⚠ El teléfono es obligatorio.</span>
           <span *ngIf="telefono.errors?.['pattern']">⚠ Debe contener exactamente 9 dígitos numéricos.</span>
         </small>
       </div>
 
+      <!-- Botón Submit (deshabilitado si el form es inválido) -->
       <button type="submit" class="btn-amarillo btn-submit" [disabled]="miFormulario.invalid">
         REGISTRAR PACIENTE
       </button>
     </form>
 
+    <!-- Mensaje de éxito -->
     <p class="exito" *ngIf="mensajeExito">{{ mensajeExito }}</p>
   </section>
 
-  <!-- ============ TABLA DINÁMICA ============ -->
+  <!-- ============================================================
+       TABLA DINÁMICA DE MASCOTAS REGISTRADAS
+       ============================================================ -->
   <section class="contenedor tabla-seccion" *ngIf="listaMascotas.length > 0">
     <h2 class="seccion-titulo">🐾 Pacientes Atendidos ({{ listaMascotas.length }})</h2>
 
@@ -94,18 +126,24 @@
         <tr *ngFor="let m of listaMascotas; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ m.nombre }}</td>
-          <td><span [ngClass]="getClaseEspecie(m.especie)">{{ m.especie }}</span></td>
+          <td>
+            <span [ngClass]="getClaseEspecie(m.especie)">{{ m.especie }}</span>
+          </td>
           <td>{{ m.edad }} año(s)</td>
           <td>{{ m.telefono }}</td>
           <td>
-            <button class="btn-eliminar" (click)="eliminar(m.id)">Dar de alta / Eliminar</button>
+            <button class="btn-eliminar" (click)="eliminar(m.id)">
+              Dar de alta / Eliminar
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <!-- Mensaje cuando no hay registros -->
+  <!-- ============================================================
+       ESTADO VACÍO (cuando no hay registros)
+       ============================================================ -->
   <section class="contenedor vacio" *ngIf="listaMascotas.length === 0">
     <p>🐶 Aún no hay pacientes registrados. ¡Comienza llenando la ficha clínica!</p>
   </section>
