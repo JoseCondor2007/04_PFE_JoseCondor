@@ -104,7 +104,7 @@
         <select id="confirmarAdopcion" formControlName="confirmarAdopcion">
           <option value="" disabled selected>-- Selecciona --</option>
           <option value="si">Sí, confirmo</option>
-          <option value="no">No, aún no</option> <!-- Texto cambiado para mayor claridad -->
+          <option value="no">No, aún no</option>
         </select>
         
         <small class="error" *ngIf="confirmarAdopcion.touched && confirmarAdopcion.invalid">
@@ -113,12 +113,12 @@
         </small>
       </div>
 
-      <!-- Alerta de Validación Cruzada (FormGroup) -->
+      <!-- ALERTA DE VALIDACIÓN CRUZADA DINÁMICA -->
       <div class="alerta-cruzada" *ngIf="miFormulario.touched && miFormulario.hasError('pesoIncoherente')">
-        ⚠ Alerta Cruzada: Un cachorro (menor a 1 año) no puede pesar más de 10 kg. Verifica los datos.
+        ⚠ Alerta Cruzada: {{ mensajeAlertaCruzada }} Verifica los datos.
       </div>
 
-      <!-- Botón Submit (Bloqueado si el form es inválido, está pending o pristine) -->
+      <!-- Botón Submit -->
       <button type="submit" class="btn-amarillo btn-submit" [disabled]="miFormulario.invalid || miFormulario.pending || miFormulario.pristine">
         REGISTRAR PACIENTE
       </button>

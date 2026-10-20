@@ -5,6 +5,18 @@ import { map, delay } from 'rxjs/operators';
 import { Mascota } from './models/mascota.model';
 
 // =========================================================================
+// CONFIGURACIÓN DE PESOS MÁXIMOS PARA CACHORROS (Menores a 1 año)
+// =========================================================================
+export const PESOS_MAXIMOS_CACHORRO: { [key: string]: number } = {
+  'Perro': 15,
+  'Gato': 5,
+  'Ave': 1,
+  'Conejo': 2.5,
+  'Hámster': 0.2,
+  'Reptil': 3
+};
+
+// =========================================================================
 // 1. VALIDADOR PERSONALIZADO SÍNCRONO (Evitar solo espacios)
 // =========================================================================
 export function sinEspaciosBlancos(): ValidatorFn {
@@ -24,15 +36,23 @@ export function debeConfirmar(): ValidatorFn {
 }
 
 // =========================================================================
-// 3. VALIDADOR CRUZADO (Cross-field: Peso y Edad)
+// 3. VALIDADOR CRUZADO INTELIGENTE (Peso, Edad y Especie)
 // =========================================================================
 export function validarPesoEdad(): ValidatorFn {
   return (group: AbstractControl): ValidationErrors | null => {
     const edad = group.get('edad')?.value;
     const peso = group.get('peso')?.value;
+    const especie = group.get('especie')?.value;
     
-    if (edad !== null && peso !== null && edad < 1 && peso > 10) {
-      return { pesoIncoherente: true };
+    if (edad !== null && peso !== null && especie && edad < 1) {
+      const pesoMaximo = PESOS_MAXIMOS_CACHORRO[especie];
+      if (pesoMaximo && peso > pesoMaximo) {
+        // Devolvemos el mensaje ya armado para evitar problemas de renderizado
+        return { 
+          pesoIncoherente: true, 
+          mensajeAlerta: `Un cachorro de ${especie.toLowerCase()} (menor a 1 año) no puede pesar más de ${pesoMaximo} kg.` 
+        };
+      }
     }
     return null;
   };
@@ -101,7 +121,7 @@ export class AppComponent implements OnInit, OnDestroy {
       edad: [null, [Validators.required, Validators.min(0), Validators.max(25)]],
       peso: [null, [Validators.required, Validators.min(0.1)]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
-      confirmarAdopcion: ['', [Validators.required, debeConfirmar()]] // <-- Nueva validación
+      confirmarAdopcion: ['', [Validators.required, debeConfirmar()]]
     }, { 
       validators: [validarPesoEdad()] 
     });
@@ -140,6 +160,15 @@ export class AppComponent implements OnInit, OnDestroy {
   get telefono() { return this.miFormulario.get('telefono')!; }
   get confirmarAdopcion() { return this.miFormulario.get('confirmarAdopcion')!; }
 
+  // Getter corregido para la alerta cruzada
+  get mensajeAlertaCruzada(): string {
+    const error = this.miFormulario.getError('pesoIncoherente');
+    if (!error) return '';
+    // Buscamos el mensaje en la raíz o dentro de 'validators' (comportamiento interno de Angular)
+    const mensaje = error.mensajeAlerta || error.validators?.mensajeAlerta;
+    return mensaje ? mensaje : 'Verifica los datos ingresados.';
+  }
+
   // ===== ACTUALIZACIÓN DINÁMICA =====
   onEspecieChange(): void {
     if (this.especie.value === 'Reptil') {
@@ -149,6 +178,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.peso.setValidators([Validators.required, Validators.min(0.1)]);
     }
     this.peso.updateValueAndValidity();
+    
+    // Re-evaluar el formulario completo para actualizar la alerta cruzada
+    this.miFormulario.updateValueAndValidity();
   }
 
   // ===== GUARDADO =====

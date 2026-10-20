@@ -452,7 +452,6 @@ select.ng-invalid.ng-touched {
    NUEVAS CLASES PARA VALIDACIONES AVANZADAS Y ESTADOS
    ============================================================ */
 
-/* Texto informativo (Estado PENDING) */
 .texto-info {
   color: #2563eb;
   font-size: 0.82rem;
@@ -461,7 +460,6 @@ select.ng-invalid.ng-touched {
   animation: pulse 1.5s infinite;
 }
 
-/* Alerta de validación cruzada (Amarillo) */
 .alerta-cruzada {
   background: #fff3cd;
   color: #856404;
@@ -474,7 +472,6 @@ select.ng-invalid.ng-touched {
   animation: fadeIn 0.3s ease;
 }
 
-/* Alerta de cambios sin guardar (Estado DIRTY) (Azul) */
 .alerta-cambios {
   background: #e0f2fe;
   color: #0369a1;
@@ -487,7 +484,6 @@ select.ng-invalid.ng-touched {
   animation: fadeIn 0.3s ease;
 }
 
-/* Animación para el estado PENDING */
 @keyframes pulse {
   0% { opacity: 1; }
   50% { opacity: 0.5; }
