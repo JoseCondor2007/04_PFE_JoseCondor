@@ -5,7 +5,7 @@ import { map, delay } from 'rxjs/operators';
 import { Mascota } from './models/mascota.model';
 
 // =========================================================================
-// CONFIGURACIÓN DE PESOS MÁXIMOS PARA CACHORROS (Menores a 1 año)
+// CONFIGURACIÓN DE PESOS MÁXIMOS PARA CRÍAS (Menores a 1 año)
 // =========================================================================
 export const PESOS_MAXIMOS_CACHORRO: { [key: string]: number } = {
   'Perro': 15,
@@ -47,11 +47,7 @@ export function validarPesoEdad(): ValidatorFn {
     if (edad !== null && peso !== null && especie && edad < 1) {
       const pesoMaximo = PESOS_MAXIMOS_CACHORRO[especie];
       if (pesoMaximo && peso > pesoMaximo) {
-        // Devolvemos el mensaje ya armado para evitar problemas de renderizado
-        return { 
-          pesoIncoherente: true, 
-          mensajeAlerta: `Un cachorro de ${especie.toLowerCase()} (menor a 1 año) no puede pesar más de ${pesoMaximo} kg.` 
-        };
+        return { pesoIncoherente: true };
       }
     }
     return null;
@@ -87,6 +83,9 @@ export class AppComponent implements OnInit, OnDestroy {
   listaMascotas: Mascota[] = [];
   private contadorId = 1;
   mensajeExito = '';
+  
+  // Variable para el mensaje dinámico de la alerta cruzada
+  mensajeCruzado: string = '';
 
   especies: string[] = ['Perro', 'Gato', 'Ave', 'Conejo', 'Hámster', 'Reptil'];
 
@@ -126,11 +125,44 @@ export class AppComponent implements OnInit, OnDestroy {
       validators: [validarPesoEdad()] 
     });
 
+    // Suscripción para actualizar el mensaje dinámico en tiempo real
+    this.miFormulario.valueChanges.subscribe(() => this.actualizarMensajeCruzado());
+
     this.iniciarCarrusel();
   }
 
   ngOnDestroy(): void {
     this.detenerCarrusel();
+  }
+
+  // ===== LÓGICA DEL MENSAJE CRUZADO (Con términos biológicos correctos) =====
+  actualizarMensajeCruzado(): void {
+    const edad = this.miFormulario.get('edad')?.value;
+    const peso = this.miFormulario.get('peso')?.value;
+    const especie = this.miFormulario.get('especie')?.value;
+
+    if (edad !== null && peso !== null && especie && edad < 1) {
+      const max = PESOS_MAXIMOS_CACHORRO[especie];
+      
+      if (max && peso > max) {
+        // Diccionario con el término correcto para la cría de cada especie
+        const terminosCrias: { [key: string]: string } = {
+          'Perro': 'cachorro de perro',
+          'Gato': 'gatito',
+          'Ave': 'polluelo',
+          'Conejo': 'gazapo',
+          'Hámster': 'cría de hámster',
+          'Reptil': 'cría de reptil'
+        };
+
+        const termino = terminosCrias[especie] || 'cría';
+        
+        // Armamos el mensaje exacto
+        this.mensajeCruzado = `Un(a) ${termino} (menor a 1 año) no puede pesar más de ${max} kg.`;
+        return;
+      }
+    }
+    this.mensajeCruzado = '';
   }
 
   // ===== LÓGICA DEL CARRUSEL =====
@@ -160,15 +192,6 @@ export class AppComponent implements OnInit, OnDestroy {
   get telefono() { return this.miFormulario.get('telefono')!; }
   get confirmarAdopcion() { return this.miFormulario.get('confirmarAdopcion')!; }
 
-  // Getter corregido para la alerta cruzada
-  get mensajeAlertaCruzada(): string {
-    const error = this.miFormulario.getError('pesoIncoherente');
-    if (!error) return '';
-    // Buscamos el mensaje en la raíz o dentro de 'validators' (comportamiento interno de Angular)
-    const mensaje = error.mensajeAlerta || error.validators?.mensajeAlerta;
-    return mensaje ? mensaje : 'Verifica los datos ingresados.';
-  }
-
   // ===== ACTUALIZACIÓN DINÁMICA =====
   onEspecieChange(): void {
     if (this.especie.value === 'Reptil') {
@@ -179,8 +202,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.peso.updateValueAndValidity();
     
-    // Re-evaluar el formulario completo para actualizar la alerta cruzada
+    // Re-evaluar el formulario y actualizar el mensaje
     this.miFormulario.updateValueAndValidity();
+    this.actualizarMensajeCruzado();
   }
 
   // ===== GUARDADO =====
