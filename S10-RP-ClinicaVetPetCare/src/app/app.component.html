@@ -1,37 +1,21 @@
 <div class="pagina">
-
-  <!-- ============================================================
-       PORTADA CON CARRUSEL
-       ============================================================ -->
+  <!-- PORTADA CON CARRUSEL -->
   <header class="portada">
-
-    <!-- COLUMNA IZQUIERDA: Carrusel -->
-    <div class="portada-imagen carrusel"
-         (mouseenter)="detenerCarrusel()"
-         (mouseleave)="iniciarCarrusel()">
-
+    <div class="portada-imagen carrusel" (mouseenter)="detenerCarrusel()" (mouseleave)="iniciarCarrusel()">
       <div class="slides">
-        <div class="slide"
-             *ngFor="let img of imagenesEspecies; let i = index"
-             [class.activo]="i === indiceActual">
+        <div class="slide" *ngFor="let img of imagenesEspecies; let i = index" [class.activo]="i === indiceActual">
           <img [src]="img.url" [alt]="img.nombre">
           <div class="slide-overlay"></div>
           <span class="slide-nombre">{{ img.nombre }}</span>
         </div>
       </div>
-
       <button class="carrusel-btn prev" (click)="anterior()" aria-label="Anterior">❮</button>
       <button class="carrusel-btn next" (click)="siguiente()" aria-label="Siguiente">❯</button>
-
       <div class="indicadores">
-        <span *ngFor="let img of imagenesEspecies; let i = index"
-              class="dot"
-              [class.activo]="i === indiceActual"
-              (click)="irA(i)"></span>
+        <span *ngFor="let img of imagenesEspecies; let i = index" class="dot" [class.activo]="i === indiceActual" (click)="irA(i)"></span>
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: Texto -->
     <div class="portada-texto">
       <h1 class="titulo-cursiva">Registro Clínico<br>de Mascotas</h1>
       <p class="subtitulo">
@@ -43,28 +27,40 @@
     </div>
   </header>
 
-  <!-- ============================================================
-       FORMULARIO REACTIVO
-       ============================================================ -->
+  <!-- FORMULARIO REACTIVO -->
   <section class="contenedor" id="formulario">
     <h2 class="seccion-titulo">📋 Nueva Ficha Clínica</h2>
 
     <form [formGroup]="miFormulario" (ngSubmit)="guardar()">
 
+      <!-- AVISO DE CAMBIOS SIN GUARDAR (Estado DIRTY) -->
+      <div class="alerta-cambios" *ngIf="miFormulario.dirty && miFormulario.valid">
+        ✍️ Tienes datos listos. No olvides presionar "Registrar Paciente".
+      </div>
+
       <!-- Campo: Nombre -->
       <div class="campo">
         <label for="nombre">Nombre de la Mascota</label>
         <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Firulais">
+        
+        <!-- Estado PENDING (Validación asíncrona) -->
+        <small class="texto-info" *ngIf="nombre.pending">Verificando disponibilidad del nombre...</small>
+
+        <!-- Errores (Estado TOUCHED e INVALID) -->
         <small class="error" *ngIf="nombre.touched && nombre.invalid">
-          <span *ngIf="nombre.errors?.['required']">⚠ El nombre es obligatorio.</span>
-          <span *ngIf="nombre.errors?.['minlength']">⚠ Mínimo 2 caracteres.</span>
+          <span *ngIf="nombre.hasError('required')">⚠ El nombre es obligatorio.</span>
+          <span *ngIf="nombre.hasError('minlength')">⚠ Mínimo 3 caracteres.</span>
+          <span *ngIf="nombre.hasError('maxlength')">⚠ Máximo 50 caracteres.</span>
+          <span *ngIf="nombre.hasError('pattern')">⚠ El nombre solo debe contener letras.</span>
+          <span *ngIf="nombre.hasError('sinEspacios')">⚠ El nombre no puede ser solo espacios en blanco.</span>
+          <span *ngIf="nombre.hasError('nombreOcupado')">⚠ Este nombre ya está registrado en el sistema.</span>
         </small>
       </div>
 
-      <!-- Campo: Especie (dropdown) -->
+      <!-- Campo: Especie -->
       <div class="campo">
         <label for="especie">Especie</label>
-        <select id="especie" formControlName="especie">
+        <select id="especie" formControlName="especie" (change)="onEspecieChange()">
           <option value="" disabled selected>-- Selecciona una especie --</option>
           <option *ngFor="let esp of especies" [value]="esp">{{ esp }}</option>
         </select>
@@ -76,41 +72,64 @@
       <!-- Campo: Edad -->
       <div class="campo">
         <label for="edad">Edad (años)</label>
-        <input id="edad" type="number" formControlName="edad" placeholder="0 - 25" min="0" max="25">
+        <input id="edad" type="number" formControlName="edad" placeholder="0 - 25">
         <small class="error" *ngIf="edad.touched && edad.invalid">
-          <span *ngIf="edad.errors?.['required']">⚠ La edad es obligatoria.</span>
-          <span *ngIf="edad.errors?.['min']">⚠ La edad no puede ser negativa.</span>
-          <span *ngIf="edad.errors?.['max']">⚠ La edad máxima es 25 años.</span>
+          <span *ngIf="edad.hasError('required')">⚠ La edad es obligatoria.</span>
+          <span *ngIf="edad.hasError('min')">⚠ La edad no puede ser negativa.</span>
+          <span *ngIf="edad.hasError('max')">⚠ La edad máxima es 25 años.</span>
+        </small>
+      </div>
+
+      <!-- Campo: Peso -->
+      <div class="campo">
+        <label for="peso">Peso (kg)</label>
+        <input id="peso" type="number" step="0.1" formControlName="peso" placeholder="Mayor a 0.1 kg">
+        <small class="error" *ngIf="peso.touched && peso.invalid">
+          <span *ngIf="peso.hasError('required')">⚠ El peso es obligatorio.</span>
+          <span *ngIf="peso.hasError('min')">⚠ El peso debe ser mayor a 0.1 kg.</span>
         </small>
       </div>
 
       <!-- Campo: Teléfono -->
       <div class="campo">
         <label for="telefono">Teléfono del Propietario</label>
-        <input id="telefono" type="text" formControlName="telefono" maxlength="9"
-               placeholder="9 dígitos numéricos" inputmode="numeric">
+        <input id="telefono" type="text" formControlName="telefono" maxlength="9" placeholder="9 dígitos numéricos" inputmode="numeric">
         <small class="error" *ngIf="telefono.touched && telefono.invalid">
-          <span *ngIf="telefono.errors?.['required']">⚠ El teléfono es obligatorio.</span>
-          <span *ngIf="telefono.errors?.['pattern']">⚠ Debe contener exactamente 9 dígitos numéricos.</span>
+          <span *ngIf="telefono.hasError('required')">⚠ El teléfono es obligatorio.</span>
+          <span *ngIf="telefono.hasError('pattern')">⚠ Debe contener exactamente 9 dígitos numéricos.</span>
         </small>
       </div>
 
-      <!-- Botón Submit (deshabilitado si el form es inválido) -->
-      <button type="submit" class="btn-amarillo btn-submit" [disabled]="miFormulario.invalid">
+      <!-- Campo de Validación Cruzada -->
+      <div class="campo">
+        <label for="confirmarAdopcion">¿Confirma los datos para adopción?</label>
+        <select id="confirmarAdopcion" formControlName="confirmarAdopcion">
+          <option value="" disabled selected>-- Selecciona --</option>
+          <option value="si">Sí, confirmo</option>
+          <option value="no">No</option>
+        </select>
+        <small class="error" *ngIf="confirmarAdopcion.touched && confirmarAdopcion.invalid">
+          ⚠ Debes confirmar este campo.
+        </small>
+      </div>
+
+      <!-- Alerta de Validación Cruzada (FormGroup) -->
+      <div class="alerta-cruzada" *ngIf="miFormulario.touched && miFormulario.hasError('pesoIncoherente')">
+        ⚠ Alerta Cruzada: Un cachorro (menor a 1 año) no puede pesar más de 10 kg. Verifica los datos.
+      </div>
+
+      <!-- Botón Submit (Deshabilitado si es inválido, pending o pristine) -->
+      <button type="submit" class="btn-amarillo btn-submit" [disabled]="miFormulario.invalid || miFormulario.pending || miFormulario.pristine">
         REGISTRAR PACIENTE
       </button>
     </form>
 
-    <!-- Mensaje de éxito -->
     <p class="exito" *ngIf="mensajeExito">{{ mensajeExito }}</p>
   </section>
 
-  <!-- ============================================================
-       TABLA DINÁMICA DE MASCOTAS REGISTRADAS
-       ============================================================ -->
+  <!-- TABLA DINÁMICA -->
   <section class="contenedor tabla-seccion" *ngIf="listaMascotas.length > 0">
     <h2 class="seccion-titulo">🐾 Pacientes Atendidos ({{ listaMascotas.length }})</h2>
-
     <table class="tabla-mascotas">
       <thead>
         <tr>
@@ -118,6 +137,7 @@
           <th>Nombre</th>
           <th>Especie</th>
           <th>Edad</th>
+          <th>Peso</th>
           <th>Teléfono</th>
           <th>Acción</th>
         </tr>
@@ -126,26 +146,19 @@
         <tr *ngFor="let m of listaMascotas; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ m.nombre }}</td>
-          <td>
-            <span [ngClass]="getClaseEspecie(m.especie)">{{ m.especie }}</span>
-          </td>
+          <td><span [ngClass]="getClaseEspecie(m.especie)">{{ m.especie }}</span></td>
           <td>{{ m.edad }} año(s)</td>
+          <td>{{ m.peso }} kg</td>
           <td>{{ m.telefono }}</td>
           <td>
-            <button class="btn-eliminar" (click)="eliminar(m.id)">
-              Dar de alta / Eliminar
-            </button>
+            <button class="btn-eliminar" (click)="eliminar(m.id)">Dar de alta / Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ============================================================
-       ESTADO VACÍO (cuando no hay registros)
-       ============================================================ -->
   <section class="contenedor vacio" *ngIf="listaMascotas.length === 0">
     <p>🐶 Aún no hay pacientes registrados. ¡Comienza llenando la ficha clínica!</p>
   </section>
-
 </div>

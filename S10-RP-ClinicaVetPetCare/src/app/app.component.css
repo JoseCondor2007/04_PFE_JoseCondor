@@ -13,7 +13,7 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   color: #2b2b2b;
   min-height: 100vh;
-  background: transparent; /* deja ver las huellas del body */
+  background: transparent;
 }
 
 .pagina {
@@ -27,7 +27,7 @@
    ============================================================ */
 .portada {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* ← LAS 2 COLUMNAS */
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: center;
   padding: 40px 20px;
@@ -35,7 +35,6 @@
   overflow: hidden;
 }
 
-/* Huella decorativa grande detrás del título */
 .portada::before {
   content: "";
   position: absolute;
@@ -63,14 +62,12 @@
   z-index: 1;
 }
 
-/* Contenedor de slides */
 .slides {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* Cada slide: apilado uno encima del otro */
 .slide {
   position: absolute;
   inset: 0;
@@ -91,7 +88,6 @@
   display: block;
 }
 
-/* Overlay degradado para que se lea el nombre */
 .slide-overlay {
   position: absolute;
   inset: 0;
@@ -103,7 +99,6 @@
   );
 }
 
-/* Nombre de la especie sobre la imagen */
 .slide-nombre {
   position: absolute;
   bottom: 20px;
@@ -117,7 +112,6 @@
   z-index: 2;
 }
 
-/* Flechas de navegación */
 .carrusel-btn {
   position: absolute;
   top: 50%;
@@ -147,7 +141,6 @@
 .carrusel-btn.prev { left: 12px; }
 .carrusel-btn.next { right: 12px; }
 
-/* Indicadores (dots) */
 .indicadores {
   position: absolute;
   bottom: 14px;
@@ -167,9 +160,7 @@
   border: 2px solid transparent;
 }
 
-.dot:hover {
-  background: rgba(255,255,255,0.8);
-}
+.dot:hover { background: rgba(255,255,255,0.8); }
 
 .dot.activo {
   background: #F2C200;
@@ -177,7 +168,6 @@
   border-color: #fff;
 }
 
-/* Círculo amarillo decorativo */
 .circulo-amarillo {
   position: absolute;
   top: 30px;
@@ -192,7 +182,7 @@
 }
 
 /* ============================================================
-   TEXTO DE LA PORTADA (columna derecha)
+   TEXTO DE LA PORTADA
    ============================================================ */
 .portada-texto {
   padding-left: 20px;
@@ -230,7 +220,7 @@
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 2px;
-  text-decoration: none;   /* ← quita el subrayado azul */
+  text-decoration: none;
   padding: 14px 28px;
   border: none;
   cursor: pointer;
@@ -245,7 +235,7 @@
 }
 
 /* ============================================================
-   CONTENEDORES (formulario y tabla)
+   CONTENEDORES
    ============================================================ */
 .contenedor {
   max-width: 620px;
@@ -354,9 +344,7 @@ select.ng-invalid.ng-touched {
 /* ============================================================
    TABLA DINÁMICA
    ============================================================ */
-.tabla-seccion {
-  max-width: 900px;
-}
+.tabla-seccion { max-width: 900px; }
 
 .tabla-mascotas {
   width: 100%;
@@ -380,17 +368,9 @@ select.ng-invalid.ng-touched {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.tabla-mascotas tbody tr {
-  transition: background 0.2s;
-}
-
-.tabla-mascotas tbody tr:hover {
-  background: #fffbe6;
-}
-
-.tabla-mascotas tbody tr:last-child td {
-  border-bottom: none;
-}
+.tabla-mascotas tbody tr { transition: background 0.2s; }
+.tabla-mascotas tbody tr:hover { background: #fffbe6; }
+.tabla-mascotas tbody tr:last-child td { border-bottom: none; }
 
 /* ============================================================
    BADGES POR ESPECIE
@@ -449,67 +429,67 @@ select.ng-invalid.ng-touched {
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-  .portada {
-    grid-template-columns: 1fr;   /* 1 sola columna en móvil */
-    gap: 20px;
-    padding: 20px 0;
-  }
-
-  .portada-imagen.carrusel {
-    height: 280px;
-  }
-
-  .titulo-cursiva {
-    font-size: 2.6rem;
-  }
-
-  .slide-nombre {
-    font-size: 1.3rem;
-    bottom: 14px;
-    left: 16px;
-  }
-
-  .carrusel-btn {
-    width: 34px;
-    height: 34px;
-    font-size: 0.9rem;
-  }
-
-  .circulo-amarillo {
-    width: 120px;
-    height: 120px;
-    right: -10px;
-  }
-
-  .portada::before {
-    width: 160px;
-    height: 160px;
-    top: -20px;
-    right: -30px;
-  }
-
-  .contenedor {
-    padding: 22px;
-    margin: 25px auto;
-  }
-
-  .tabla-mascotas {
-    font-size: 0.78rem;
-  }
-
-  .tabla-mascotas th,
-  .tabla-mascotas td {
-    padding: 8px;
-  }
-
-  .btn-eliminar {
-    font-size: 0.7rem;
-    padding: 5px 8px;
-  }
+  .portada { grid-template-columns: 1fr; gap: 20px; padding: 20px 0; }
+  .portada-imagen.carrusel { height: 280px; }
+  .titulo-cursiva { font-size: 2.6rem; }
+  .slide-nombre { font-size: 1.3rem; bottom: 14px; left: 16px; }
+  .carrusel-btn { width: 34px; height: 34px; font-size: 0.9rem; }
+  .circulo-amarillo { width: 120px; height: 120px; right: -10px; }
+  .portada::before { width: 160px; height: 160px; top: -20px; right: -30px; }
+  .contenedor { padding: 22px; margin: 25px auto; }
+  .tabla-mascotas { font-size: 0.78rem; }
+  .tabla-mascotas th, .tabla-mascotas td { padding: 8px; }
+  .btn-eliminar { font-size: 0.7rem; padding: 5px 8px; }
 }
 
 @media (max-width: 480px) {
   .titulo-cursiva { font-size: 2rem; }
   .subtitulo { font-size: 0.9rem; }
   .seccion-titulo { font-size: 1.2rem; }
+}
+
+/* ============================================================
+   NUEVAS CLASES PARA VALIDACIONES AVANZADAS Y ESTADOS
+   ============================================================ */
+
+/* Texto informativo (Estado PENDING) */
+.texto-info {
+  color: #2563eb;
+  font-size: 0.82rem;
+  font-family: 'Arial', sans-serif;
+  font-style: italic;
+  animation: pulse 1.5s infinite;
+}
+
+/* Alerta de validación cruzada (Amarillo) */
+.alerta-cruzada {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Alerta de cambios sin guardar (Estado DIRTY) (Azul) */
+.alerta-cambios {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 10px;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación para el estado PENDING */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
