@@ -5,8 +5,7 @@ import { map, delay } from 'rxjs/operators';
 import { Mascota } from './models/mascota.model';
 
 // =========================================================================
-// 1. VALIDADOR PERSONALIZADO SÍNCRONO
-// Evita que el campo contenga solo espacios en blanco
+// 1. VALIDADOR PERSONALIZADO SÍNCRONO (Evitar solo espacios)
 // =========================================================================
 export function sinEspaciosBlancos(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -16,15 +15,22 @@ export function sinEspaciosBlancos(): ValidatorFn {
 }
 
 // =========================================================================
-// 2. VALIDADOR CRUZADO (Cross-field)
-// Se aplica a nivel de FormGroup para comparar campos hermanos
+// 2. VALIDADOR PERSONALIZADO (Obligar a seleccionar "sí")
+// =========================================================================
+export function debeConfirmar(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return control.value === 'si' ? null : { debeConfirmar: true };
+  };
+}
+
+// =========================================================================
+// 3. VALIDADOR CRUZADO (Cross-field: Peso y Edad)
 // =========================================================================
 export function validarPesoEdad(): ValidatorFn {
   return (group: AbstractControl): ValidationErrors | null => {
     const edad = group.get('edad')?.value;
     const peso = group.get('peso')?.value;
     
-    // Regla de negocio: Si es menor a 1 año, el peso no debería superar los 10kg
     if (edad !== null && peso !== null && edad < 1 && peso > 10) {
       return { pesoIncoherente: true };
     }
@@ -33,14 +39,12 @@ export function validarPesoEdad(): ValidatorFn {
 }
 
 // =========================================================================
-// 3. VALIDADOR ASÍNCRONO
-// Simula una consulta a una API para verificar si el nombre ya existe
+// 4. VALIDADOR ASÍNCRONO (Nombre único simulado)
 // =========================================================================
 export function nombreUnicoValidator(): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     if (!control.value) return of(null);
     
-    // Simulamos latencia de red de 800ms
     return of(control.value).pipe(
       delay(800),
       map((nombre: string) => {
@@ -87,17 +91,17 @@ export class AppComponent implements OnInit, OnDestroy {
           Validators.required, 
           Validators.minLength(3), 
           Validators.maxLength(50),
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'), // Solo letras
+          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
           sinEspaciosBlancos()
         ],
         asyncValidators: [nombreUnicoValidator()],
-        updateOn: 'blur' // Se ejecuta al perder el foco
+        updateOn: 'blur'
       }],
       especie: ['', [Validators.required]],
       edad: [null, [Validators.required, Validators.min(0), Validators.max(25)]],
       peso: [null, [Validators.required, Validators.min(0.1)]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
-      confirmarAdopcion: ['', [Validators.required]]
+      confirmarAdopcion: ['', [Validators.required, debeConfirmar()]] // <-- Nueva validación
     }, { 
       validators: [validarPesoEdad()] 
     });
@@ -136,7 +140,7 @@ export class AppComponent implements OnInit, OnDestroy {
   get telefono() { return this.miFormulario.get('telefono')!; }
   get confirmarAdopcion() { return this.miFormulario.get('confirmarAdopcion')!; }
 
-  // ===== ACTUALIZACIÓN DINÁMICA DE VALIDADORES =====
+  // ===== ACTUALIZACIÓN DINÁMICA =====
   onEspecieChange(): void {
     if (this.especie.value === 'Reptil') {
       this.peso.clearValidators();
@@ -144,13 +148,13 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       this.peso.setValidators([Validators.required, Validators.min(0.1)]);
     }
-    this.peso.updateValueAndValidity(); // CRÍTICO para aplicar cambios
+    this.peso.updateValueAndValidity();
   }
 
   // ===== GUARDADO =====
   guardar(): void {
     if (this.miFormulario.invalid) {
-      this.miFormulario.markAllAsTouched(); // Fuerza la visualización de errores
+      this.miFormulario.markAllAsTouched();
       return;
     }
 
@@ -166,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.listaMascotas.push(nuevaMascota);
     this.mensajeExito = `✅ Paciente "${nuevaMascota.nombre}" registrado correctamente.`;
-    this.miFormulario.reset(); // Devuelve a estado pristine y limpia campos
+    this.miFormulario.reset();
 
     setTimeout(() => (this.mensajeExito = ''), 3000);
   }
